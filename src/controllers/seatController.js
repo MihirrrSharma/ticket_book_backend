@@ -4,6 +4,7 @@ const Seat = require('../models/seatModel');
 
 exports.getSeats = async (req, res) => {
     try {
+        //returning the whole seats
         const seats = await Seat.find({});
         res.status(200).json(seats);
     } catch (error) {
@@ -20,7 +21,7 @@ exports.bookSeats = async (req, res) => {
     }
 
     try {
-        // Fetch available seats
+        // Fetch seats which are available
         const availableSeats = await Seat.find({ reserved: false }).sort('seatNumber').limit(numSeats);
         console.log(availableSeats);
 
@@ -28,7 +29,7 @@ exports.bookSeats = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Not enough seats available' });
         }
 
-        // Book the seats
+        // booking the seats which are available
         const bookingId = new mongoose.Types.ObjectId();
         const seatNumbers = availableSeats.map(seat => seat.seatNumber);
         console.log(bookingId, seatNumbers);
